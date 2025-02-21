@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:t_store/features/authentication/screens/login/login.screen.dart';
 
 class OnboardingController extends GetxController {
   static OnboardingController get instance => Get.find();
@@ -22,6 +23,7 @@ class OnboardingController extends GetxController {
   void nextPage() {
     if (currentIndex.value == 2) {
       // pass
+      Get.offAll(const LoginScreen());
     } else {
       int page = currentIndex.value + 1;
       pageController.animateToPage(page,
