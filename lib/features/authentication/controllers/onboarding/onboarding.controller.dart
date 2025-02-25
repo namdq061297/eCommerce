@@ -14,7 +14,6 @@ class OnboardingController extends GetxController {
   }
 
   void dotNavigatePress(index) {
-    print(index);
     currentIndex.value = index;
     pageController.animateToPage(index,
         duration: const Duration(microseconds: 2000), curve: Curves.easeIn);
