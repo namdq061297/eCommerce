@@ -1,0 +1,2 @@
+/Users/namdq/Desktop/code/eCommerce/android/app/.cxx/Debug/464z3p82/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/namdq/Desktop/code/eCommerce/android/app/.cxx/Debug/464z3p82/armeabi-v7a/CMakeFiles/rebuild_cache.dir
