@@ -31,8 +31,9 @@ class OnboardingController extends GetxController {
   }
 
   void skipPage() {
-    currentIndex.value = 2;
-    pageController.animateToPage(2,
-        duration: const Duration(microseconds: 2000), curve: Curves.easeIn);
+    // currentIndex.value = 2;
+    // pageController.animateToPage(2,
+    //     duration: const Duration(microseconds: 2000), curve: Curves.easeIn);
+    Get.offAll(const LoginScreen());
   }
 }

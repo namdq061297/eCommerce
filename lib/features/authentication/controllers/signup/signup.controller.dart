@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:t_store/features/authentication/screens/signup/verifyEmail.screen.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -12,6 +13,10 @@ class SignUpController extends GetxController {
 
   void setCheck() {
     isCheck.value = !isCheck.value;
+  }
+
+  void goToVerifyEmail(){
+    Get.to(() => const VerifyEmailScreen());
   }
 
 }
