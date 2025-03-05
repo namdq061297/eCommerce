@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/TPrimaryHeaderContainer.dart';
+import 'package:t_store/features/authentication/screens/home/widget/THomeCategories.dart';
 import 'package:t_store/features/authentication/screens/home/widget/home_appbar.dart';
+import 'package:t_store/features/authentication/screens/home/widget/home_search.dart';
+import 'package:t_store/utils/constants/sizes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,12 +15,28 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             TPrimaryHeaderContainer(
-              child: THomeAppBar(),
-            ),
+                child: Column(
+              children: [
+                THomeAppBar(),
+                SizedBox(
+                  height: TSizes.spaceBtwItems,
+                ),
+                TSearchContainer(
+                  text: 'Search in Store',
+                ),
+                SizedBox(
+                  height: TSizes.spaceBtwItems,
+                ),
+                THomeCategories()
+              ],
+            )),
           ],
         ),
       ),
     );
   }
 }
+
+
+
 
