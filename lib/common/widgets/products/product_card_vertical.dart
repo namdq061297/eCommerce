@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/TCircularIcon.dart';
 import 'package:t_store/common/widgets/TRoundContainer.dart';
-import 'package:t_store/common/widgets/TRoundedImage.dart';
+import 'package:t_store/common/widgets/image/TRoundedImage.dart';
 import 'package:t_store/common/widgets/shadow.dart';
-import 'package:t_store/common/widgets/text/product_price.dart';
+import 'package:t_store/common/widgets/text/brand_title_with_verified_icon.dart';
 import 'package:t_store/common/widgets/text/product_title.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
+
+import '../text/product_price.dart';
 
 class TProductCardVertical extends StatelessWidget {
   const TProductCardVertical({super.key});
@@ -19,7 +21,7 @@ class TProductCardVertical extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
 
     return GestureDetector(
-      onTap: (){},
+      onTap: () {},
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),
@@ -42,7 +44,7 @@ class TProductCardVertical extends StatelessWidget {
                     imageUrl: TImages.productImage1,
                     borderRadius: 10,
                   ),
-      
+
                   /// -- Sale Tag
                   Positioned(
                     top: 12,
@@ -63,12 +65,15 @@ class TProductCardVertical extends StatelessWidget {
                     ),
                   ),
                   const Positioned(
-                      top: 0,
-                      right: 0,
-                      child: TCircularIcon(
-                        icon: Iconsax.heart5,
-                        color: Colors.redAccent,
-                      ))
+                    top: 0,
+                    right: 0,
+                    child: TCircularIcon(
+                      icon: Iconsax.heart5,
+                      color: Colors.redAccent,
+                      width: 40,
+                      height: 40,
+                    ),
+                  )
                 ],
               ),
             ),
@@ -78,28 +83,22 @@ class TProductCardVertical extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: TSizes.sm),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const TProductTitle(
-                    title: 'product',
+                    title: 'Nike Air',
                     smallSize: true,
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems / 2),
-                  Row(
-                    children: [
-                      Text('Nike',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.labelMedium),
-                      const SizedBox(width: TSizes.xs),
-                      const Icon(Iconsax.verify5,
-                          color: TColors.primary, size: TSizes.iconXs),
-                    ],
-                  ),
+                  const TBrandTitleWithVerifiedIcon(title: 'Nike',),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// Price
-                    const TProductPriceText(price: '10',),
+                      const TProductPriceText(
+                        price: '10',
+                      ),
                       Container(
                         decoration: const BoxDecoration(
                           color: TColors.dark,

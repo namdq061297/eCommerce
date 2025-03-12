@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:t_store/common/widgets/TRoundedImage.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/TCircularContainer.dart';
+import 'package:t_store/common/widgets/image/TRoundedImage.dart';
 import 'package:t_store/features/shop/controllers/home_controller.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
