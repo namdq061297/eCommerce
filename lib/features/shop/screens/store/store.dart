@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/common/widgets/TCart.dart';
-import 'package:t_store/common/widgets/TRoundContainer.dart';
 import 'package:t_store/common/widgets/TSectionHeading.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/appbar/tabbar.dart';
 import 'package:t_store/common/widgets/brand/brand_card.dart';
 import 'package:t_store/common/widgets/layout/gird_layout.dart';
 import 'package:t_store/features/shop/screens/home/widget/home_search.dart';
+import 'package:t_store/features/shop/screens/store/widget/category_tab.dart';
 import 'package:t_store/utils/constants/colors.dart';
-import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
 
@@ -36,7 +35,7 @@ class StoreScreen extends StatelessWidget {
                 pinned: true,
                 floating: true,
                 backgroundColor: isDark ? TColors.black : TColors.white,
-                expandedHeight: 440,
+                expandedHeight: 500,
                 flexibleSpace: Padding(
                   padding: const EdgeInsets.all(TSizes.defaultSpace),
                   child: ListView(
@@ -60,8 +59,10 @@ class StoreScreen extends StatelessWidget {
                       TGridLayout(
                         itemCount: 4,
                         mainAxisExtent: 80,
-                        itemBuilder: (_, index) =>
-                            TBrandCard(isDark: isDark, showBorder: true,), // (),),
+                        itemBuilder: (_, index) => TBrandCard(
+                          isDark: isDark,
+                          showBorder: true,
+                        ), // (),),
                       )
                     ],
                   ),
@@ -78,36 +79,14 @@ class StoreScreen extends StatelessWidget {
               ),
             ];
           },
-          body: Column(
+          body: TabBarView(
             children: [
               /// --- Brands
-              TRoundedContainer(
-                showBorder: true,
-                borderColor: TColors.darkGrey,
-                backgroundColor: Colors.transparent,
-                margin: const EdgeInsets.only(bottom: TSizes.spaceBtwItems),
-                child: Column(
-                  children: [
-                    /// Brand with Products Count
-                     TBrandCard(showBorder: false, isDark: isDark,),
-
-                    /// Brand Top 3 Product Images
-                    Row(
-                      children: [
-                        TRoundedContainer(
-                          height: 100,
-                          backgroundColor: isDark
-                              ? TColors.darkerGrey
-                              : TColors.light,
-                          margin: const EdgeInsets.only(right: TSizes.sm),
-                          padding: const EdgeInsets.only(right: TSizes.sm),
-                          child: const Image(image: AssetImage(TImages.productImage1), fit: BoxFit.contain,),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              TTabCategoryTab(isDark: isDark),
+              TTabCategoryTab(isDark: isDark),
+              TTabCategoryTab(isDark: isDark),
+              TTabCategoryTab(isDark: isDark),
+              TTabCategoryTab(isDark: isDark),
             ],
           ),
         ),
@@ -115,3 +94,5 @@ class StoreScreen extends StatelessWidget {
     );
   }
 }
+
+
