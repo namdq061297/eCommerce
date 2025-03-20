@@ -61,6 +61,7 @@ flutter:
   #--------------- LOCAL ASSETS ------------------#
   assets:
     - assets/logos/
+    - assets/images/users/
     - assets/icons/brands/
     - assets/images/content/
     - assets/images/banners/

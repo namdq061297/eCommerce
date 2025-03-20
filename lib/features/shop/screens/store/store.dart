@@ -79,14 +79,14 @@ class StoreScreen extends StatelessWidget {
               ),
             ];
           },
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               /// --- Brands
-              TTabCategoryTab(isDark: isDark),
-              TTabCategoryTab(isDark: isDark),
-              TTabCategoryTab(isDark: isDark),
-              TTabCategoryTab(isDark: isDark),
-              TTabCategoryTab(isDark: isDark),
+              TTabCategoryTab(),
+              TTabCategoryTab(),
+              TTabCategoryTab(),
+              TTabCategoryTab(),
+              TTabCategoryTab(),
             ],
           ),
         ),

@@ -5,18 +5,19 @@ import 'package:t_store/common/widgets/products/product_card_vertical.dart';
 import 'package:t_store/common/widgets/text/section_heading.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
+import 'package:t_store/utils/helpers/helper_functions.dart';
 
 
 class TTabCategoryTab extends StatelessWidget {
   const TTabCategoryTab({
     super.key,
-    required this.isDark,
   });
 
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+  final isDark = THelperFunctions.isDarkMode(context);
+
   return ListView(
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
