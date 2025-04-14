@@ -6,7 +6,7 @@ import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/TPrimaryHeaderContainer.dart';
 import 'package:t_store/common/widgets/list_tile/setting_menu_tile.dart';
 import 'package:t_store/common/widgets/list_tile/user_profile.dart';
-import 'package:t_store/features/shop/screens/profile/profile.dart';
+import 'package:t_store/features/personalization/screens/profile/profile.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 

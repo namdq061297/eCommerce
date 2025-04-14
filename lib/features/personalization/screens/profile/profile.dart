@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/TSectionHeading.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/image/TCircularImage.dart';
-import 'package:t_store/features/shop/screens/profile/widget/profile_menu.dart';
+import 'package:t_store/features/personalization/screens/profile/widget/profile_menu.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';

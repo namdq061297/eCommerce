@@ -13,6 +13,7 @@ class TRoundedImage extends StatelessWidget {
     this.isNetWorkUrl,
     this.onPress,
     this.borderRadius,
+    this.bgColor,
   });
 
   final double? width, height;
@@ -23,6 +24,7 @@ class TRoundedImage extends StatelessWidget {
   final bool? isNetWorkUrl;
   final VoidCallback? onPress;
   final double? borderRadius;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TRoundedImage extends StatelessWidget {
       onTap: onPress,
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius ?? 0), border: border),
+            borderRadius: BorderRadius.circular(borderRadius ?? 0), border: border, color: bgColor),
         width: width,
         height: height,
         padding: padding,
