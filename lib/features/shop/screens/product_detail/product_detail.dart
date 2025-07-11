@@ -5,7 +5,9 @@ import 'package:t_store/common/widgets/TSectionHeading.dart';
 import 'package:t_store/features/shop/screens/product_detail/widgets/TProductMetaData.dart';
 import 'package:t_store/features/shop/screens/product_detail/widgets/TProductSlideImage.dart';
 import 'package:t_store/features/shop/screens/product_detail/widgets/TRatingAndShare.dart';
+import 'package:t_store/features/shop/screens/product_review/product_review.dart';
 import 'package:t_store/utils/constants/sizes.dart';
+import 'package:get/get.dart';
 
 import 'controller/product_detail.controller.dart';
 import 'widgets/TBottomAddToCart.dart';
@@ -66,9 +68,12 @@ class ProductDetail extends StatelessWidget {
                   ),
                   const Divider(),
                   const SizedBox(height: TSizes.spaceBtwItems),
-                  const TSectionHeading(
+                  TSectionHeading(
                     title: 'Review (11)',
                     showActionButton: false,
+                    onPress: () => Get.to(
+                          () => const ProductReviewScreen(),
+                        ),
                   ),
                   const SizedBox(height: TSizes.spaceBtwSections),
                 ],
