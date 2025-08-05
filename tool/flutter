@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$1" == "cw" ]; then
+  shift
+  node "$(dirname "$0")/create_widget.js" "$@"
+else
+  command flutter "$@"
+fi
