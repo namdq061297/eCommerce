@@ -55,11 +55,11 @@ class UserReviewCard extends StatelessWidget {
         const ReadMoreText(
           trimLines: 2,
           trimExpandedText: ' Show less',
-          moreStyle: const TextStyle(
+          moreStyle: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: TColors.primary),
-          lessStyle: const TextStyle(
+          lessStyle: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: TColors.primary),

@@ -7,7 +7,6 @@ import 'package:t_store/features/shop/screens/product_detail/widgets/TProductSli
 import 'package:t_store/features/shop/screens/product_detail/widgets/TRatingAndShare.dart';
 import 'package:t_store/features/shop/screens/product_review/product_review.dart';
 import 'package:t_store/utils/constants/sizes.dart';
-import 'package:get/get.dart';
 
 import 'controller/product_detail.controller.dart';
 import 'widgets/TBottomAddToCart.dart';
