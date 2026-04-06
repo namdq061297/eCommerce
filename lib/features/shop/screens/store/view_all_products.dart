@@ -1,91 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/TRoundContainer.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/layout/gird_layout.dart';
 import 'package:t_store/common/widgets/products/product_card_vertical.dart';
+import 'package:t_store/features/shop/controllers/view_all_products_controller.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
 
-class ViewAllProductsScreen extends StatefulWidget {
+class ViewAllProductsScreen extends StatelessWidget {
   const ViewAllProductsScreen({super.key});
 
   @override
-  State<ViewAllProductsScreen> createState() => _ViewAllProductsScreenState();
-}
-
-class _ViewAllProductsScreenState extends State<ViewAllProductsScreen> {
-  final List<String> _filterOptions = [
-    'Higher Price',
-    'Lower Price',
-    'Sale',
-    'Newest',
-    'Popularity',
-  ];
-
-  String _selectedFilter = 'Higher Price';
-
-  void _openFilterSheet() {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(TSizes.cardRadiusLg)),
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: TSizes.defaultSpace,
-            vertical: TSizes.spaceBtwItems,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 48,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: TColors.grey,
-                    borderRadius: BorderRadius.circular(TSizes.sm),
-                  ),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwItems),
-              Text(
-                'Sort by',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: TSizes.spaceBtwItems),
-              ..._filterOptions.map((option) {
-                final selected = option == _selectedFilter;
-                return ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(option),
-                  trailing: selected
-                      ? const Icon(Iconsax.arrow_right_3, size: TSizes.iconMd)
-                      : null,
-                  onTap: () {
-                    setState(() {
-                      _selectedFilter = option;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                );
-              }),
-              const SizedBox(height: TSizes.spaceBtwItems),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ViewAllProductsController());
     final isDark = THelperFunctions.isDarkMode(context);
 
     return Scaffold(
@@ -104,7 +34,16 @@ class _ViewAllProductsScreenState extends State<ViewAllProductsScreen> {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               GestureDetector(
-                onTap: _openFilterSheet,
+                onTap: () async {
+                  final selected = await THelperFunctions.showAppBottomSheet<String>(
+                    context: context,
+                    filterOptions: controller.filterOptions,
+                    selectedFilter: controller.selectedFilter.value,
+                  );
+                  if (selected != null && selected != controller.selectedFilter.value) {
+                    controller.updateSelectedFilter(selected);
+                  }
+                },
                 child: TRoundedContainer(
                   padding: const EdgeInsets.symmetric(
                     horizontal: TSizes.sm,
@@ -119,10 +58,10 @@ class _ViewAllProductsScreenState extends State<ViewAllProductsScreen> {
                         color: TColors.textPrimary,
                       ),
                       const SizedBox(width: TSizes.xs),
-                      Text(
-                        _selectedFilter,
+                      Obx(() => Text(
+                        controller.selectedFilter.value,
                         style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      )),
                     ],
                   ),
                 ),

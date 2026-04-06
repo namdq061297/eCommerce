@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:t_store/utils/constants/colors.dart';
+import 'package:t_store/utils/constants/sizes.dart';
 
 class THelperFunctions {
   static Color? getColor(String value) {
@@ -92,6 +95,104 @@ class THelperFunctions {
 
   static double screenWidth() {
     return MediaQuery.of(Get.context!).size.width;
+  }
+
+  static Future<String?> showAppBottomSheet<T>({
+    required BuildContext context,
+    WidgetBuilder? builder,
+    List<String>? filterOptions,
+    String? selectedFilter,
+    bool isScrollControlled = false,
+    Color? backgroundColor,
+    double radius = TSizes.cardRadiusLg,
+    Color? barrierColor,
+    bool useRootNavigator = false,
+    bool enableDrag = true,
+  }) async {
+    if (filterOptions != null && selectedFilter != null) {
+      // Handle filter sheet logic
+      return await showModalBottomSheet<String>(
+        context: context,
+        isScrollControlled: isScrollControlled,
+        backgroundColor: Colors.transparent,
+        barrierColor: barrierColor,
+        useRootNavigator: useRootNavigator,
+        enableDrag: enableDrag,
+        builder: (_) {
+          return Container(
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(radius)),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: TSizes.defaultSpace,
+              vertical: TSizes.spaceBtwItems,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 48,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: TColors.grey,
+                      borderRadius: BorderRadius.circular(TSizes.sm),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: TSizes.spaceBtwItems),
+                Text(
+                  'Sort by',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: TSizes.spaceBtwItems),
+                ...filterOptions.map((option) {
+                  final selected = option == selectedFilter;
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(option),
+                    trailing: selected
+                        ? const Icon(Iconsax.arrow_right_3, size: TSizes.iconMd)
+                        : null,
+                    onTap: () {
+                      Navigator.of(context).pop(option);
+                    },
+                  );
+                }),
+                const SizedBox(height: TSizes.spaceBtwItems),
+              ],
+            ),
+          );
+        },
+      );
+    } else if (builder != null) {
+      // Original generic bottom sheet
+      return await showModalBottomSheet(
+        context: context,
+        isScrollControlled: isScrollControlled,
+        backgroundColor: Colors.transparent,
+        barrierColor: barrierColor,
+        useRootNavigator: useRootNavigator,
+        enableDrag: enableDrag,
+        builder: (_) {
+          return Container(
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(radius)),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: TSizes.defaultSpace,
+              vertical: TSizes.spaceBtwItems,
+            ),
+            child: builder(_),
+          );
+        },
+      );
+    } else {
+      return null;
+    }
   }
 
   static String getFormattedDate(DateTime date, {String format = 'dd MMM yyyy'}) {

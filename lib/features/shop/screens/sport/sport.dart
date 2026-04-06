@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:t_store/common/widgets/TRoundContainer.dart';
 import 'package:t_store/common/widgets/TSectionHeading.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
-import 'package:t_store/common/widgets/image/TRoundedImage.dart';
+import 'package:t_store/features/shop/screens/home/widget/TPromoSlider.dart';
 import 'package:t_store/features/shop/screens/store/view_all_products.dart';
 import 'package:t_store/features/shop/screens/sport/widgets/sport_category_card.dart';
-import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
@@ -55,7 +53,14 @@ class SportScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildBanner(context, dark),
+              const TPromoSlider(
+                autoPlay: true,
+                banners: [
+                  TImages.banner1,
+                  TImages.banner2,
+                  TImages.banner3,
+                ],
+              ),
               const SizedBox(height: TSizes.spaceBtwSections),
               ...categories.map((category) {
                 return Column(
@@ -69,7 +74,7 @@ class SportScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: TSizes.spaceBtwItems),
                     SizedBox(
-                      height: 170,
+                      height: 140,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: 2,
@@ -87,7 +92,7 @@ class SportScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: TSizes.spaceBtwSections),
+                    const SizedBox(height: TSizes.spaceBtwSections / 2),
                   ],
                 );
               }),
@@ -98,82 +103,4 @@ class SportScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBanner(BuildContext context, bool dark) {
-    return TRoundedContainer(
-      radius: TSizes.cardRadiusLg,
-      backgroundColor: dark ? TColors.darkerGrey : TColors.white,
-      padding: EdgeInsets.zero,
-      child: Stack(
-        children: [
-          const TRoundedImage(
-            imageUrl: TImages.banner4,
-            width: double.infinity,
-            height: 220,
-            fit: BoxFit.cover,
-          ),
-          Positioned(
-            left: TSizes.defaultSpace,
-            top: TSizes.defaultSpace,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'New Collection',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .apply(color: TColors.white),
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems / 2),
-                Text(
-                  'FASHION SALE',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall!
-                      .apply(color: TColors.white, fontWeightDelta: 2),
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: TSizes.md,
-                    vertical: TSizes.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: TColors.secondary,
-                    borderRadius: BorderRadius.circular(TSizes.cardRadiusMd),
-                  ),
-                  child: Text(
-                    'Shop now',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .apply(color: TColors.black),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Positioned(
-            right: TSizes.defaultSpace,
-            top: TSizes.defaultSpace,
-            child: TRoundedContainer(
-              radius: TSizes.productImageRadius,
-              backgroundColor: TColors.secondary,
-              padding: const EdgeInsets.symmetric(
-                horizontal: TSizes.sm,
-                vertical: TSizes.xs,
-              ),
-              child: Text(
-                '50% off',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge!
-                    .apply(color: TColors.black),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
