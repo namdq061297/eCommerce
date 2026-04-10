@@ -15,6 +15,14 @@ class TValidator {
     return null;
   }
 
+  static String? validateEmptyString(String? value, String fieldName) {
+    if (value == null || value.isEmpty) {
+      return '$fieldName is required.';
+    }
+
+    return null;
+  }
+
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required.';
