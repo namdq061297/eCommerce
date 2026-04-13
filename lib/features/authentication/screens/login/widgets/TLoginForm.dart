@@ -4,9 +4,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:t_store/features/authentication/controllers/login/login.controller.dart';
 import 'package:t_store/features/authentication/screens/password/forget_password.dart';
 import 'package:t_store/features/authentication/screens/signup/signup.screen.dart';
-import 'package:t_store/navigation_menu.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/constants/text_strings.dart';
+
 
 class TLoginForm extends StatelessWidget {
   const TLoginForm({
@@ -18,12 +18,15 @@ class TLoginForm extends StatelessWidget {
     final controller = Get.put(LoginController());
 
     return Form(
+      key: controller.formKey,
       child: Obx(() => Padding(
             padding: const EdgeInsetsDirectional.symmetric(
                 vertical: TSizes.spaceBtwSections),
             child: Column(
               children: [
                 TextFormField(
+                  controller: controller.email,
+                  validator: (value) => value == null || value.isEmpty ? 'Please enter your email' : null,
                   decoration: const InputDecoration(
                       prefixIcon: Icon(Iconsax.direct_right),
                       labelText: TTexts.email),
@@ -32,6 +35,8 @@ class TLoginForm extends StatelessWidget {
                   height: TSizes.spaceBtwInputFields,
                 ),
                 TextFormField(
+                    controller: controller.password,
+                    validator: (value) => value == null || value.isEmpty ? 'Please enter your password' : null,
                     obscureText: controller.isShowPassword.value,
                     decoration: InputDecoration(
                         prefixIcon: const Icon(Iconsax.password_check),
@@ -49,7 +54,9 @@ class TLoginForm extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Checkbox(value: true, onChanged: (val) {}),
+                        Checkbox(
+                            value: controller.rememberMe.value,
+                            onChanged: (val) => controller.rememberMe.value = val ?? false),
                         const Text(TTexts.rememberMe),
                       ],
                     ),
@@ -64,7 +71,8 @@ class TLoginForm extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () => Get.to(() =>  NavigationMenu()), child: const Text(TTexts.signIn)),
+                      onPressed: () => controller.login(),
+                      child: const Text(TTexts.signIn)),
                 ),
                 const SizedBox(
                   height: TSizes.spaceBtwItems,

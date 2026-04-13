@@ -6,6 +6,7 @@ import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/TPrimaryHeaderContainer.dart';
 import 'package:t_store/common/widgets/list_tile/setting_menu_tile.dart';
 import 'package:t_store/common/widgets/list_tile/user_profile.dart';
+import 'package:t_store/data/repositories/authentication/authentication.repository.dart';
 import 'package:t_store/features/personalization/screens/address/address_screen.dart';
 import 'package:t_store/features/personalization/screens/profile/profile.dart';
 import 'package:t_store/features/shop/screens/order/order.dart';
@@ -111,6 +112,36 @@ class SettingsScreen extends StatelessWidget {
                     subTitle: 'Set image quality to be seen',
                     trailing: Switch(value: false, onChanged: (value) {}),
                   ),
+
+                  /// -- Logout --
+                  const SizedBox(height: TSizes.spaceBtwSections),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => Get.defaultDialog(
+                        title: 'Logout',
+                        middleText: 'Are you sure you want to logout?',
+                        confirm: ElevatedButton(
+                          onPressed: () => AuthenticationRepository.instance.logout(),
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: TSizes.lg),
+                            child: Text('Logout'),
+                          ),
+                        ),
+                        cancel: OutlinedButton(
+                          onPressed: () => Get.back(),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: TSizes.lg),
+                            child: Text('Cancel'),
+                          ),
+                        ),
+                      ),
+                      icon: const Icon(Iconsax.logout),
+                      label: const Text('Logout'),
+                    ),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwSections),
                 ],
               ),
             ),
