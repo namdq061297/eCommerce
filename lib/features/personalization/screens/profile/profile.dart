@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/TSectionHeading.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/image/TCircularImage.dart';
+import 'package:t_store/features/personalization/controllers/user.controller.dart';
+import 'package:t_store/features/personalization/screens/profile/change_name.dart';
 import 'package:t_store/features/personalization/screens/profile/widget/profile_menu.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
@@ -18,6 +22,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(UserController());
+
     return Scaffold(
       appBar: const TAppBar(
         showBackArrow: true,
@@ -55,12 +61,12 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwItems),
 
               TProfileMenu(
-                value: 'Coding with T',
-                onPress: () {},
+                value: controller.user.value?.fullName ?? 'User',
+                onPress: () => Get.to(() => const ChangeName()),
                 title: 'Name',
               ),
               TProfileMenu(
-                  title: 'Username', value: 'coding_with_t', onPress: () {}),
+                  title: 'Username', value: controller.user.value?.username ?? 'coding_with_t', onPress: () {}),
 
               const SizedBox(height: TSizes.spaceBtwItems),
               const Divider(),
@@ -73,15 +79,15 @@ class ProfileScreen extends StatelessWidget {
 
               TProfileMenu(
                 title: 'User ID',
-                value: '45689',
-                onPress: () => copyToClipboard('45689'),
+                value: controller.user.value?.id ?? '',
+                onPress: () => copyToClipboard(controller.user.value?.id ?? ''),
                 icon: Iconsax.copy,
               ),
               TProfileMenu(
-                  title: 'E-mail', value: 'coding_with_t', onPress: () {}),
+                  title: 'E-mail', value: controller.user.value?.email ?? '', onPress: () {}),
               TProfileMenu(
                   title: 'Phone Number',
-                  value: '+92-317-8059528',
+                  value: controller.user.value?.phoneNumber ?? '',
                   onPress: () {}),
               TProfileMenu(title: 'Gender', value: 'Male', onPress: () {}),
               TProfileMenu(

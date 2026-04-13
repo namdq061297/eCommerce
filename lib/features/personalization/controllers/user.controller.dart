@@ -6,9 +6,54 @@ import 'package:t_store/utils/popups/loaders.dart';
 
 class UserController extends GetxController {
   static UserController get instance => Get.find();
+  Rx<UserModel?> user = UserModel.empty().obs;
+  final userRepository = UserRepository.instance;
+  final profileLoading = false.obs;
+
+  @override
+  void onInit(){
+    super.onInit();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      final userData = await userRepository.fetchUserDetails();
+      print('userData fetched: ${userData.toJson()}');
+      user(userData);
+      profileLoading.value = true;
+      // Lưu user data vào observable để các widget có thể sử dụng
+      // Ví dụ: this.user.value = userData;
+    } catch (e) {
+      TLoaders.errorSnackBar(
+        title: 'Error fetching user data',
+        message: e.toString(),
+      );
+    } finally {
+      profileLoading.value = true;
+    }
+  }
 
   /// Lưu thông tin user vào Firestore sau khi đăng nhập bằng social (Google/Facebook).
   /// Chỉ lưu nếu đây là lần đăng nhập đầu tiên (isNewUser == true).
+  /// Update first name + last name in Firestore and local state
+  Future<void> updateName(String firstName, String lastName) async {
+    try {
+      await userRepository.updateSingleField({
+        'FirstName': firstName,
+        'LastName': lastName,
+      });
+      user.update((u) {
+        u?.firstName = firstName;
+        u?.lastName = lastName;
+      });
+      Get.back();
+      TLoaders.successSnackBar(title: 'Congratulations', message: 'Your name has been updated.');
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
   Future<void> saveUserRecord(UserCredential? userCredential) async {
     try {
       if (userCredential == null || userCredential.user == null) return;
@@ -39,4 +84,5 @@ class UserController extends GetxController {
       );
     }
   }
+  
 }

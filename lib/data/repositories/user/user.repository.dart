@@ -49,19 +49,8 @@ class UserRepository extends GetxController {
   }
 
   /// Update toàn bộ thông tin user (merge)
-  Future<void> updateUserDetails(UserModel user) async {
-    try {
-      await _db.collection('Users').doc(user.id).update(user.toJson());
-    } on FirebaseAuthException catch (e) {
-      throw TFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw TFirebaseException(e.code).message;
-    } on PlatformException catch (e) {
-      throw TPlatformException(e.code).message;
-    } catch (e) {
-      throw 'Something went wrong. Please try again.';
-    }
-  }
+  Future<void> updateUserDetails(UserModel user) =>
+      updateSingleField(user.toJson());
 
   /// Update một field bất kỳ trong Users collection
   Future<void> updateSingleField(Map<String, dynamic> json) async {

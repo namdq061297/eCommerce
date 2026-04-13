@@ -107,5 +107,27 @@ class LoginController extends GetxController {
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
+
+  Future<void> facebookSignIn() async {
+    try {
+      TFullScreenLoader.openLoadingDialog('Logging you in...', TImages.docerAnimation);
+
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+
+      final userCredential = await AuthenticationRepository.instance.signInWithFacebook();
+
+      await UserController.instance.saveUserRecord(userCredential);
+
+      TFullScreenLoader.stopLoading();
+      AuthenticationRepository.instance.screenRedirect();
+    } catch (e) {
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
 }
 

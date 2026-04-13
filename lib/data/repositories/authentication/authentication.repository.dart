@@ -24,9 +24,8 @@ class AuthenticationRepository extends GetxController {
     screenRedirect();
   }
 
-  screenRedirect() async {
+   screenRedirect() async {
     final user = _auth.currentUser;
-    print('user: $user');
     if (user != null) {
       // Reload để lấy trạng thái emailVerified mới nhất từ server
       await user.reload();
@@ -128,6 +127,21 @@ class AuthenticationRepository extends GetxController {
       final OAuthCredential credential =
           FacebookAuthProvider.credential(result.accessToken!.tokenString);
       return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  /// Gửi email reset password
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
