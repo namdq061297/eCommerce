@@ -17,7 +17,6 @@ class VerifyEmailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = THelperFunctions.isDarkMode(context);
     final controller = Get.put(VerifyEmailController());
 
     return Scaffold(

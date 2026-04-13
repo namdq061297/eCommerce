@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:t_store/data/repositories/authentication/authentication.repository.dart';
+import 'package:t_store/features/personalization/controllers/user.controller.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/helpers/network_manager.dart';
 import 'package:t_store/utils/local_storage/storage_utility.dart';
@@ -74,10 +74,32 @@ class LoginController extends GetxController {
       }
 
       // Login with Firebase Authentication
-      final UserCredential userCredential = await AuthenticationRepository.instance
+      await AuthenticationRepository.instance
           .loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       // Redirect
+      TFullScreenLoader.stopLoading();
+      AuthenticationRepository.instance.screenRedirect();
+    } catch (e) {
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  Future<void> googleSignIn() async {
+    try {
+      TFullScreenLoader.openLoadingDialog('Logging you in...', TImages.docerAnimation);
+
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+      final userCredential = await AuthenticationRepository.instance.signInWithGoogle();
+
+      // Lưu user record nếu là lần đăng nhập đầu tiên
+      await UserController.instance.saveUserRecord(userCredential);
+
       TFullScreenLoader.stopLoading();
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {

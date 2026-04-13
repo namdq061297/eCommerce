@@ -6,14 +6,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:t_store/features/authentication/screens/password/reset_password.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/constants/text_strings.dart';
-import 'package:t_store/utils/helpers/helper_functions.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dark = THelperFunctions.isDarkMode(context);
     // final controller = Get.put(SignUpController());
 
     return Scaffold(

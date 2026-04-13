@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:t_store/data/repositories/authentication/authentication.repository.dart';
 import 'package:t_store/data/repositories/user/user.repository.dart';
+import 'package:t_store/features/personalization/controllers/user.controller.dart';
 import 'package:t_store/utils/helpers/network_manager.dart';
 
 class GeneralBindings extends Bindings {
@@ -8,6 +9,7 @@ class GeneralBindings extends Bindings {
   void dependencies() {
     Get.put(AuthenticationRepository());
     Get.put(UserRepository());
+    Get.put(UserController());
     Get.put(NetworkManager());
   }
 }
