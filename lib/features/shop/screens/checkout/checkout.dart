@@ -4,6 +4,7 @@ import 'package:t_store/common/commons_screen/success_screen.dart';
 import 'package:t_store/common/widgets/TRoundContainer.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/products/coupon_widget.dart';
+import 'package:t_store/data/repositories/authentication/authentication.repository.dart';
 import 'package:t_store/features/shop/screens/cart/widget/cart_items.dart';
 import 'package:t_store/features/shop/screens/checkout/widget/billing_address_section.dart';
 import 'package:t_store/features/shop/screens/checkout/widget/billing_amount_section.dart';
@@ -61,10 +62,11 @@ class CheckoutScreen extends StatelessWidget {
         ), // Padding
       ), // SingleChildScrollView
       bottomNavigationBar: ElevatedButton(
-          onPressed: () => Get.to(const SuccessScreen(
+          onPressed: () => Get.to(SuccessScreen(
                 image: TImages.successfulPaymentIcon,
                 subTitle: 'Your order has been placed successfully!',
                 title: 'Order Placed',
+                onPressed: AuthenticationRepository.instance.screenRedirect()
               )),
           child: const Text('Checkout')),
     ); // Scaffold

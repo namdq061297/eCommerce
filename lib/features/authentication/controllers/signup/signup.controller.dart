@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:t_store/data/repositories/authentication/authentication.repository.dart';
 import 'package:t_store/data/repositories/user/user.repository.dart';
 import 'package:t_store/features/authentication/screens/signup/verifyEmail.screen.dart';
 import 'package:t_store/features/personalization/models/user.model.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
-import 'package:t_store/utils/exceptions/firebase_auth_exceptions.dart';
-import 'package:t_store/utils/exceptions/firebase_exceptions.dart';
-import 'package:t_store/utils/exceptions/platform_exceptions.dart';
 import 'package:t_store/utils/helpers/network_manager.dart';
 import 'package:t_store/utils/popups/full_screen_loader.dart';
 import 'package:t_store/utils/popups/loaders.dart';
@@ -93,8 +89,6 @@ class SignUpController extends GetxController {
           email: email.text.trim(),
           phoneNumber: phoneNumber.text.trim(),
         );
-        // final userRepo = Get.put(UserRepository());
-        // await userRepo.saveUserRecord(newUser);
         await UserRepository.instance.saveUserRecord(newUser);
       }
 
@@ -105,16 +99,7 @@ class SignUpController extends GetxController {
       );
 
       // Move to Verify Email Screen
-      Get.to(() => const VerifyEmailScreen());
-    } on FirebaseAuthException catch (e) {
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: TFirebaseAuthException(e.code).message);
-    } on FirebaseException catch (e) {
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: TFirebaseException(e.code).message);
-    } on PlatformException catch (e) {
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: TPlatformException(e.code).message);
+      Get.to(() => VerifyEmailScreen(email: email.text.trim()));
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
