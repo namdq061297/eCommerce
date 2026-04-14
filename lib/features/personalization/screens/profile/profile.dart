@@ -39,15 +39,27 @@ class ProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    const TCircularImage(
-                      image: TImages.user,
-                      width: 80,
-                      height: 80,
-                      overlayColor: TColors.white,
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: const Text('Change Profile Picture')),
+                    Obx(() {
+                      final profilePicture = controller.user.value?.profilePicture ?? '';
+                      return TCircularImage(
+                        image: profilePicture.isNotEmpty ? profilePicture : TImages.user,
+                        isNetworkImage: profilePicture.isNotEmpty,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.contain,
+                      );
+                    }),
+                    Obx(() => TextButton(
+                        onPressed: controller.imageUploading.value
+                            ? null
+                            : controller.uploadProfilePicture,
+                        child: controller.imageUploading.value
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Text('Change Profile Picture'))),
                   ],
                 ),
               ),

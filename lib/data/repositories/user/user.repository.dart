@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:t_store/features/personalization/models/user.model.dart';
 import 'package:t_store/utils/exceptions/firebase_auth_exceptions.dart';
@@ -61,6 +64,21 @@ class UserRepository extends GetxController {
       await _db.collection('Users').doc(uid).update(json);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  /// Upload profile picture to Firebase Storage and return download URL
+  Future<String> uploadImage(String path, File image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref(path);
+      await ref.putFile(image);
+      return await ref.getDownloadURL();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {

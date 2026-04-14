@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:t_store/data/repositories/user/user.repository.dart';
 import 'package:t_store/features/personalization/models/user.model.dart';
 import 'package:t_store/utils/popups/loaders.dart';
@@ -9,6 +12,7 @@ class UserController extends GetxController {
   Rx<UserModel?> user = UserModel.empty().obs;
   final userRepository = UserRepository.instance;
   final profileLoading = false.obs;
+  final imageUploading = false.obs;
 
   @override
   void onInit(){
@@ -18,10 +22,10 @@ class UserController extends GetxController {
 
   Future<void> fetchUserData() async {
     try {
+      profileLoading.value = true;
       final userData = await userRepository.fetchUserDetails();
       print('userData fetched: ${userData.toJson()}');
       user(userData);
-      profileLoading.value = true;
       // Lưu user data vào observable để các widget có thể sử dụng
       // Ví dụ: this.user.value = userData;
     } catch (e) {
@@ -30,7 +34,7 @@ class UserController extends GetxController {
         message: e.toString(),
       );
     } finally {
-      profileLoading.value = true;
+      profileLoading.value = false;
     }
   }
 
@@ -51,6 +55,32 @@ class UserController extends GetxController {
       TLoaders.successSnackBar(title: 'Congratulations', message: 'Your name has been updated.');
     } catch (e) {
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  Future<void> uploadProfilePicture() async {
+    try {
+      final picker = ImagePicker();
+      final picked = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 70,
+        maxWidth: 512,
+      );
+      if (picked == null) return;
+
+      imageUploading.value = true;
+      final uid = user.value?.id ?? '';
+      final url = await userRepository.uploadImage(
+        'Users/Images/Profile/$uid/ProfilePicture',
+        File(picked.path),
+      );
+      await userRepository.updateSingleField({'ProfilePicture': url});
+      user.update((u) => u?.profilePicture = url);
+      TLoaders.successSnackBar(title: 'Congratulations', message: 'Your profile picture has been updated.');
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    } finally {
+      imageUploading.value = false;
     }
   }
 
