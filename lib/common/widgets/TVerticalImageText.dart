@@ -37,12 +37,12 @@ class TVerticalImageText extends StatelessWidget {
                       backgroundColor ?? (dark ? TColors.black : TColors.light),
                   borderRadius: BorderRadius.circular(100)),
               child: Center(
-                child: Image(
+                child: image.isNotEmpty ? Image(
                   image: AssetImage(image),
                   fit: BoxFit.cover,
                   color:
                       dark ? TColors.light : TColors.grey,
-                ),
+                ) : const SizedBox(),
               ),
             ),
             const SizedBox(

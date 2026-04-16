@@ -21,7 +21,7 @@ class TUserProfileTile extends StatelessWidget {
         width: 50,
         height: 50,
         padding: 0,
-        overlayColor: TColors.white,
+        overLayColor: TColors.white,
       ),
       title: Obx(() {
         return Text(

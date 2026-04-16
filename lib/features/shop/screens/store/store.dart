@@ -5,6 +5,7 @@ import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/appbar/tabbar.dart';
 import 'package:t_store/common/widgets/brand/brand_card.dart';
 import 'package:t_store/common/widgets/layout/gird_layout.dart';
+import 'package:t_store/features/shop/controllers/category.controller.dart';
 import 'package:t_store/features/shop/screens/home/widget/home_search.dart';
 import 'package:t_store/features/shop/screens/store/widget/category_tab.dart';
 import 'package:t_store/utils/constants/colors.dart';
@@ -17,8 +18,9 @@ class StoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = THelperFunctions.isDarkMode(context);
+    final categories = CategoryController.instance.featuredCategories;
     return DefaultTabController(
-      length: 5,
+      length: categories.length,
       child: Scaffold(
         appBar: TAppBar(
           title:
@@ -67,27 +69,18 @@ class StoreScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                bottom: const TTabBar(
-                  tabs: [
-                    Tab(child: Text('Sports')),
-                    Tab(child: Text('Furniture')),
-                    Tab(child: Text('Electronics')),
-                    Tab(child: Text('Clothes')),
-                    Tab(child: Text('Cosmetics')),
-                  ],
+                bottom: TTabBar(
+                  tabs: categories
+                      .map((cat) => Tab(text: cat.name))
+                      .toList(),
                 ),
               ),
             ];
           },
-          body: const TabBarView(
-            children: [
-              /// --- Brands
-              TTabCategoryTab(),
-              TTabCategoryTab(),
-              TTabCategoryTab(),
-              TTabCategoryTab(),
-              TTabCategoryTab(),
-            ],
+          body: TabBarView(
+            children: categories
+                .map((cat) => TTabCategoryTab(category: cat))
+                .toList(),
           ),
         ),
       ),

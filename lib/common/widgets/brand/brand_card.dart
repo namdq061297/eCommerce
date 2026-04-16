@@ -30,7 +30,7 @@ class TBrandCard extends StatelessWidget {
               isNetworkImage: false,
               image: TImages.clothIcon,
               backgroundColor: Colors.transparent,
-              overlayColor:
+              overLayColor:
                   isDark ? TColors.white : TColors.black,
             ),
           ), // TCircularImage

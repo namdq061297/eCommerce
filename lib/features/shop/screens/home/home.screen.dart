@@ -45,11 +45,6 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   const TPromoSlider(
                     autoPlay: true,
-                    banners: [
-                      TImages.banner1,
-                      TImages.banner2,
-                      TImages.banner3
-                    ],
                   ),
                   TSectionHeading(title: 'Popular product', onPress: (){},),
                   const SizedBox(

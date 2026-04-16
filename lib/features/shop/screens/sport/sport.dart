@@ -55,11 +55,6 @@ class SportScreen extends StatelessWidget {
             children: [
               const TPromoSlider(
                 autoPlay: true,
-                banners: [
-                  TImages.banner1,
-                  TImages.banner2,
-                  TImages.banner3,
-                ],
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
               ...categories.map((category) {
