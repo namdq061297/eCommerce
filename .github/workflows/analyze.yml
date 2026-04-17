@@ -1,0 +1,35 @@
+name: Code Analysis
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.x'
+          channel: stable
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run analyzer
+        run: flutter analyze
+
+      - name: Run lints
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Format check
+        run: dart format --line-length=80 --set-exit-if-changed lib/
+
+      - name: Pubspec validity
+        run: flutter pub pub-outdated

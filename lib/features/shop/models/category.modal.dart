@@ -36,11 +36,11 @@ class CategoryModel {
   /// Map JSON to model
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-      id: json['Id'] ?? '',
-      image: json['Image'] ?? '',
-      isFeatured: json['IsFeatured'] ?? false,
-      name: json['Name'] ?? '',
-      parentId: json['ParentId'],
+      id: json['id'] ?? '',
+      image: json['image'] ?? '',
+      isFeatured: json['isFeatured'] ?? false,
+      name: json['name'] ?? '',
+      parentId: json['parentId'],
     );
   }
 
