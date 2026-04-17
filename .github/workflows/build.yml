@@ -1,16 +1,16 @@
-name: Build APK & IPA
+name: Build Debug
 
 on:
   push:
-    branches: [master]
+    branches: [master, develop]
   pull_request:
-    branches: [master]
+    branches: [master, develop]
   workflow_dispatch:
 
 jobs:
-  build_apk:
+  build_apk_debug:
     runs-on: ubuntu-latest
-    name: Build Android APK
+    name: Build Android APK (Debug)
 
     steps:
       - uses: actions/checkout@v4
@@ -24,51 +24,19 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release --split-per-abi
+      - name: Build APK Debug
+        run: flutter build apk --debug
 
       - name: Upload APK artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: apk-release
-          path: build/app/outputs/apk/release/
+          name: apk-debug
+          path: build/app/outputs/apk/debug/
+          retention-days: 7
 
-  build_ios:
-    runs-on: macos-latest
-    name: Build iOS IPA
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: stable
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build iOS
-        run: flutter build ios --release --no-codesign
-
-      - name: Create IPA
-        run: |
-          cd build/ios/Release-iphoneos
-          mkdir -p Payload
-          mv Runner.app Payload/
-          zip -r -q ../../../build/app/outputs/ipa/app-release.ipa Payload
-          cd ../../../
-
-      - name: Upload IPA artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-release
-          path: build/app/outputs/ipa/
-
-  build_web:
+  build_appbundle_debug:
     runs-on: ubuntu-latest
-    name: Build Web
+    name: Build Android App Bundle (Debug)
 
     steps:
       - uses: actions/checkout@v4
@@ -82,11 +50,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build Web
-        run: flutter build web --release
+      - name: Build App Bundle Debug
+        run: flutter build appbundle --debug
 
-      - name: Upload Web artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload Bundle artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: web-release
-          path: build/web/
+          name: appbundle-debug
+          path: build/app/outputs/bundle/debug/
+          retention-days: 7

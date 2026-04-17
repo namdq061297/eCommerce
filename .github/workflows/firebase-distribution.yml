@@ -21,17 +21,25 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build APK Debug
+        run: flutter build apk --debug
 
-      - name: Upload to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
-          serviceCredentialsFile: service-account-key.json
-          file: build/app/outputs/apk/release/app-release.apk
-          releaseNotes: "Build from GitHub Actions - ${{ github.sha }}"
-          groups: testers
+          name: debug-apk-firebase
+          path: build/app/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      # Uncomment below when ready for release builds with Firebase
+      # - name: Upload to Firebase App Distribution
+      #   uses: wzieba/Firebase-Distribution-Github-Action@v1
+      #   with:
+      #     appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+      #     serviceCredentialsFile: service-account-key.json
+      #     file: build/app/outputs/apk/debug/app-debug.apk
+      #     releaseNotes: "Debug Build - ${{ github.sha }}"
+      #     groups: testers
 
       - name: Comment on PR
         if: github.event_name == 'pull_request'
@@ -42,5 +50,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ APK built and uploaded to Firebase App Distribution for testing'
+              body: '✅ Debug APK built - download from Actions artifacts'
             })

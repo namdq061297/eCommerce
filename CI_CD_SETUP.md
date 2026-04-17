@@ -1,4 +1,6 @@
-# CI/CD Setup Guide
+# CI/CD Setup Guide - DEBUG MODE
+
+⚠️ **Current Status**: App is in DEBUG mode - no release builds yet
 
 ## Workflows Created
 
@@ -15,61 +17,82 @@
   - Run all tests with coverage
   - Upload coverage to Codecov
 
-### 3. **Build** (`build.yml`)
-- **Triggers**: Push to `master`, PR, manual trigger
+### 3. **Build Debug** (`build.yml`) - **[DEBUG MODE]**
+- **Triggers**: Push to `master`/`develop`, PR, manual trigger
 - **Tasks**:
-  - Build Android APK (release + split per ABI)
-  - Build iOS IPA (no code signing - for testing only)
-  - Build Web version
-  - Upload artifacts for download
+  - Build Android APK (debug)
+  - Build Android App Bundle (debug)
+  - Upload artifacts for download (7 days retention)
+  - ✅ Ready to use NOW
 
-### 4. **Firebase Distribution** (`firebase-distribution.yml`)
+### 4. **Firebase Distribution** (`firebase-distribution.yml`) - **[DEBUG MODE]**
 - **Triggers**: Push to `develop` branch, manual trigger
 - **Tasks**:
-  - Build APK
-  - Upload to Firebase App Distribution
-  - Notify testers
+  - Build Debug APK
+  - Upload debug APK as artifact
   - Comment on PR with status
+  - 🔕 Firebase upload: Disabled (uncomment when ready)
 
-### 5. **Release** (`release.yml`)
+### 5. **Release** (`release.yml`) - **[For future use]**
 - **Triggers**: When you create a git tag (e.g., `v1.0.0`)
-- **Tasks**:
-  - Build APK
-  - Create GitHub Release
-  - Upload APK as release asset
+- **Status**: ✅ Ready but use draft releases (draft: true)
+- **Note**: Will build release APK when you're ready
 
 ## Next Steps
 
-### Step 1: Setup Secrets (Optional but recommended)
-For Firebase App Distribution, add these secrets to your GitHub repository:
-
-1. Go to: **Settings > Secrets and variables > Actions**
-2. Add secrets:
-   - `FIREBASE_APP_ID_ANDROID`: Your Firebase App ID (find in Firebase Console)
-   - Create `service-account-key.json`: Download from Firebase > Service Accounts
-
-### Step 2: Setup Branch Protection Rules
-1. Go to: **Settings > Branches**
-2. Add rule for `master`:
-   - ✅ Require a pull request before merging
-   - ✅ Require status checks to pass (select: analyze, test, build)
-   - ✅ Require branches to be up to date
-
-### Step 3: Test the Pipeline
-1. Create a test branch: `git checkout -b test/ci-cd`
-2. Make a small change
-3. Push: `git push origin test/ci-cd`
-4. Create a PR
-5. Watch the workflows run in **Actions tab**
-
-### Step 4: Creating Releases
+### Step 1: Commit Updated Workflows
 ```bash
-# Tag a release
-git tag v1.0.0
-git push origin v1.0.0
+git add .github/ CI_CD_SETUP.md
+git commit -m "chore: setup CI/CD for debug builds"
+git push
+```
 
-# This will trigger the release workflow
-# APK will be available in GitHub Releases
+### Step 2: Test Workflows NOW ✅
+1. Go to **GitHub → Actions tab**
+2. Create a test branch: `git checkout -b test/ci-debug`
+3. Make a small change
+4. Push: `git push origin test/ci-debug`
+5. Watch workflows run
+6. Download debug APK from **Actions → Artifacts**
+
+### Step 3: When Ready for Release Builds
+When you have:
+- ✅ Build environments setup (signing certificates, keys)
+- ✅ Firebase configured
+- ✅ Tested debug builds
+
+Then:
+1. Update `build.yml` - Change `--debug` to `--release`
+2. Setup code signing for Android/iOS
+3. Configure Firebase secrets if needed
+
+### Step 4: For Play Store/App Store Deployment
+Refer to: **Setup Code Signing** section below
+
+## Quick Commands
+
+### Download Debug APK
+1. Go to **Actions → Build Debug APK (Debug) → Artifacts**
+2. Download `apk-debug`
+
+### Test on Device
+```bash
+# Build locally
+flutter build apk --debug
+
+# Install on connected device
+flutter install
+
+# Or use APK from artifacts
+adb install build/app/outputs/apk/debug/app-debug.apk
+```
+
+### Check if Workflows Pass
+```bash
+# Locally test what CI/CD will do
+flutter analyze
+flutter test
+flutter build apk --debug
 ```
 
 ## Customization
@@ -77,21 +100,63 @@ git push origin v1.0.0
 ### Change Flutter Version
 Edit the workflows - update `flutter-version: '3.19.x'` to your desired version.
 
-### Add iOS Code Signing (for real deployment)
-For actual App Store builds, you'll need to:
-1. Export provisioning profiles and certificates
-2. Add to GitHub Secrets
-3. Configure signing in `build_ios` job
+### Enable Firebase App Distribution (when ready)
+In `firebase-distribution.yml`, uncomment lines 28-37:
+```yaml
+- name: Upload to Firebase App Distribution
+  uses: wzieba/Firebase-Distribution-Github-Action@v1
+  with:
+    appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+    serviceCredentialsFile: service-account-key.json
+    file: build/app/outputs/apk/debug/app-debug.apk
+    releaseNotes: "Debug Build - ${{ github.sha }}"
+    groups: testers
+```
 
-### Run Tests Locally First
-```bash
-flutter test
-flutter analyze
+Then add secrets to GitHub:
+1. Go to **Settings > Secrets and variables > Actions**
+2. Add: `FIREBASE_APP_ID_ANDROID` and `FIREBASE_SERVICE_ACCOUNT_KEY`
+
+### Switch to Release Builds
+Update `build.yml`:
+```yaml
+# Change this:
+- name: Build APK Debug
+  run: flutter build apk --debug
+
+# To this:
+- name: Build APK Release
+  run: flutter build apk --release --split-per-abi
 ```
 
 ## Troubleshooting
 
-- **Tests failing?** Run `flutter test` locally first
-- **Build failing?** Check `flutter pub get` works locally
-- **iOS build issues?** May need code signing - see "Add iOS Code Signing" above
-- **Firebase Distribution not working?** Ensure secrets are configured correctly
+| Issue | Solution |
+|-------|----------|
+| Build fails locally | Run `flutter pub get` then `flutter build apk --debug` |
+| Workflows not showing | Go to GitHub, enable Actions in Settings |
+| APK too large | Optimize: `flutter build apk --debug --split-per-abi` |
+| Tests failing | Run `flutter test` locally first |
+| Artifact download failed | Check retention-days (currently 7 days) |
+
+## Roadmap: From Debug to Release
+
+```
+Phase 1: DEBUG (Current)
+├── ✅ Code analysis
+├── ✅ Unit tests
+├── ✅ Build debug APK
+└── ✅ Download & test
+
+Phase 2: RELEASE (When ready)
+├── Setup signing keys
+├── Configure Firebase
+├── Enable release builds
+└── Test release APK
+
+Phase 3: STORE DEPLOYMENT
+├── Setup Play Store account
+├── Setup App Store account
+├── Add signing secrets
+└── Automate deployment
+```
