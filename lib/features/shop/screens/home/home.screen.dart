@@ -7,7 +7,6 @@ import 'package:t_store/features/shop/screens/home/widget/THomeCategories.dart';
 import 'package:t_store/features/shop/screens/home/widget/TPromoSlider.dart';
 import 'package:t_store/features/shop/screens/home/widget/home_appbar.dart';
 import 'package:t_store/features/shop/screens/home/widget/home_search.dart';
-import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
 class HomeScreen extends StatelessWidget {

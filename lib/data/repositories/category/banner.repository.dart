@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:t_store/data/services/firebase_store.service.dart';
 import 'package:t_store/features/shop/models/banner.modal.dart';
-import 'package:t_store/features/shop/models/category.modal.dart';
 import 'package:t_store/utils/exceptions/firebase_exceptions.dart';
 import 'package:t_store/utils/exceptions/platform_exceptions.dart';
 

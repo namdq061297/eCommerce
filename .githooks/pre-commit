@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Ensure flutter is in PATH (git hooks run with minimal environment)
+export PATH="$PATH:/opt/homebrew/bin:$HOME/flutter/bin:/usr/local/bin"
+
+# Locate flutter binary
+FLUTTER=$(command -v flutter || true)
+if [ -z "$FLUTTER" ]; then
+  echo "⚠️  flutter not found in PATH — skipping pre-commit checks."
+  exit 0
+fi
+
+echo "🔍 Running pre-commit checks..."
+
+# Flutter analyze — only fail on errors (ignore info/warning)
+echo "[1/1] flutter analyze (errors only)"
+ANALYZE_OUTPUT=$($FLUTTER analyze 2>&1 || true)
+if echo "$ANALYZE_OUTPUT" | grep -qE "^\s+error "; then
+  echo "$ANALYZE_OUTPUT" | grep -E "^\s+error "
+  echo "❌ flutter analyze found errors. Fix before committing."
+  exit 1
+fi
+
+echo "✅ All checks passed."

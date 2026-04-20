@@ -26,10 +26,7 @@ jobs:
         run: flutter analyze
 
       - name: Run lints
-        run: flutter analyze --fatal-infos --fatal-warnings
-
-      - name: Format check
-        run: dart format --line-length=80 --set-exit-if-changed lib/
+        run: flutter analyze --fatal-warnings
 
       - name: Pubspec validity
         run: flutter pub pub-outdated

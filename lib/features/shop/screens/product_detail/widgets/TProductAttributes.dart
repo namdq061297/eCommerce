@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/common/widgets/TRoundContainer.dart';
 import 'package:t_store/common/widgets/TSectionHeading.dart';
-import 'package:t_store/common/widgets/choice/choice_Chip.dart';
+import 'package:t_store/common/widgets/choice/choice_chip.dart';
 import 'package:t_store/features/shop/screens/product_detail/widgets/TProductPriceText.dart';
 import 'package:t_store/features/shop/screens/product_detail/widgets/TProductTitleText.dart';
 import 'package:t_store/utils/constants/colors.dart';

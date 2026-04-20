@@ -9,7 +9,6 @@ import 'package:t_store/common/widgets/image/TCircularImage.dart';
 import 'package:t_store/features/personalization/controllers/user.controller.dart';
 import 'package:t_store/features/personalization/screens/profile/change_name.dart';
 import 'package:t_store/features/personalization/screens/profile/widget/profile_menu.dart';
-import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
