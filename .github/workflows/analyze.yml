@@ -26,4 +26,4 @@ jobs:
         run: flutter analyze --fatal-warnings
 
       - name: Pubspec validity
-        run: flutter pub pub-outdated
+        run: flutter pub outdated
